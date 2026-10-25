@@ -1,0 +1,14 @@
+{
+    "name": "Catalog",
+    "alias": "catalog",
+    "description": "Product catalog and category management module for FLX platform",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Catalog\\Providers\\CatalogServiceProvider"
+    ],
+    "files": [],
+    "filament": {
+        "plugin": "Modules\\Catalog\\CatalogPlugin"
+    }
+}
