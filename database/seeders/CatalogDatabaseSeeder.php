@@ -29,5 +29,11 @@ class CatalogDatabaseSeeder extends Seeder
                 'guard_name' => 'web',
             ]);
         }
+
+        // Grant to Super Admin role
+        $superAdmin = \Spatie\Permission\Models\Role::where('name', 'Super Admin')->first();
+        if ($superAdmin) {
+            $superAdmin->givePermissionTo($permissions);
+        }
     }
 }

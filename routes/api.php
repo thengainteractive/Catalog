@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function () {
-    //
+Route::prefix('v1/catalog')->group(function () {
+    Route::get('/categories', [\Modules\Catalog\Http\Controllers\Api\CatalogApiController::class, 'categories'])->name('api.catalog.categories');
+    Route::get('/products', [\Modules\Catalog\Http\Controllers\Api\CatalogApiController::class, 'products'])->name('api.catalog.products');
+    Route::get('/products/{idOrSlug}', [\Modules\Catalog\Http\Controllers\Api\CatalogApiController::class, 'show'])->name('api.catalog.products.show');
 });
