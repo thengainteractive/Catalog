@@ -19,6 +19,12 @@ class CatalogPlugin implements Plugin
             in: module_path('Catalog', 'app/Filament/Resources'),
             for: "Modules\\Catalog\\Filament\\Resources"
         );
+
+        // Auto-discover module Filament widgets
+        $panel->discoverWidgets(
+            in: module_path('Catalog', 'app/Filament/Widgets'),
+            for: "Modules\\Catalog\\Filament\\Widgets"
+        );
     }
 
     public function boot(Panel $panel): void
