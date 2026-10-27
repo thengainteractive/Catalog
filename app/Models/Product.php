@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -58,7 +59,7 @@ class Product extends Model
             }
         }
 
-        if (! Schema::hasTable('catalog_product_variants')) {
+        if (Schema::hasTable('catalog_products') && ! Schema::hasTable('catalog_product_variants')) {
             Schema::create('catalog_product_variants', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('product_id')->constrained('catalog_products')->cascadeOnDelete();
@@ -82,8 +83,8 @@ class Product extends Model
 
                 $removedImages = array_diff($originalImages, $currentImages);
                 foreach ($removedImages as $path) {
-                    if (! empty($path) && \Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
-                        \Illuminate\Support\Facades\Storage::disk('public')->delete($path);
+                    if (! empty($path) && Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->delete($path);
                     }
                 }
             }
@@ -92,8 +93,8 @@ class Product extends Model
         static::deleted(function (Product $product) {
             $images = (array) ($product->gallery_images ?? []);
             foreach ($images as $path) {
-                if (! empty($path) && \Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($path);
+                if (! empty($path) && Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
                 }
             }
         });
@@ -136,4 +137,3 @@ class Product extends Model
         return (float) ($this->sale_price ?? $this->actual_price ?? 0);
     }
 }
-

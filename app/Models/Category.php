@@ -5,6 +5,7 @@ namespace Modules\Catalog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
@@ -29,15 +30,15 @@ class Category extends Model
         static::updating(function (Category $category) {
             if ($category->isDirty('cover_image')) {
                 $originalCover = $category->getOriginal('cover_image');
-                if (! empty($originalCover) && \Illuminate\Support\Facades\Storage::disk('public')->exists($originalCover)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($originalCover);
+                if (! empty($originalCover) && Storage::disk('public')->exists($originalCover)) {
+                    Storage::disk('public')->delete($originalCover);
                 }
             }
         });
 
         static::deleted(function (Category $category) {
-            if (! empty($category->cover_image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->cover_image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->cover_image);
+            if (! empty($category->cover_image) && Storage::disk('public')->exists($category->cover_image)) {
+                Storage::disk('public')->delete($category->cover_image);
             }
         });
     }
@@ -47,4 +48,3 @@ class Category extends Model
         return $this->hasMany(Product::class, 'category_id');
     }
 }
-

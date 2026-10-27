@@ -33,6 +33,15 @@ class CatalogServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(
+            \Modules\Catalog\Contracts\CatalogServiceInterface::class,
+            \Modules\Catalog\Services\CatalogService::class
+        );
+        $this->app->alias(
+            \Modules\Catalog\Contracts\CatalogServiceInterface::class,
+            'catalog.service'
+        );
+
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }
@@ -102,7 +111,10 @@ class CatalogServiceProvider extends ServiceProvider
      */
     public function provides(): array
     {
-        return [];
+        return [
+            \Modules\Catalog\Contracts\CatalogServiceInterface::class,
+            'catalog.service',
+        ];
     }
 
     private function getPublishableViewPaths(): array
