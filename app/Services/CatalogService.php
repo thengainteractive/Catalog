@@ -144,10 +144,17 @@ class CatalogService implements CatalogServiceInterface
         }
 
         if (is_numeric($idOrSlug)) {
-            return Product::with('category')->find($idOrSlug);
+            return Product::with(['category', 'variants'])->find($idOrSlug);
         }
 
-        return Product::with('category')->where('slug', $idOrSlug)->first();
+        if (is_string($idOrSlug) && str_contains($idOrSlug, '_')) {
+            $parts = explode('_', $idOrSlug);
+            if (is_numeric($parts[0])) {
+                return Product::with(['category', 'variants'])->find((int) $parts[0]);
+            }
+        }
+
+        return Product::with(['category', 'variants'])->where('slug', $idOrSlug)->first();
     }
 
     /**
